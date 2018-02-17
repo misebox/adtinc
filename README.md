@@ -1,1 +1,9 @@
 # adtinc
+
+
+## testing
+
+```
+$ make test
+```
+
