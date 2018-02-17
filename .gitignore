@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # google-test
-test/build/*
-!test/build/.gitkeep
+build/*
+!build/.gitkeep

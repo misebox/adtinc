@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
-project(libadt-test)
+project(libadt-main)
 
 # Change here if test directory moves
 set(BASE_DIR ..)
@@ -13,9 +13,6 @@ set(LIB_DIR ${BASE_DIR}/lib)
 FILE(GLOB SOURCES ${LIB_DIR}/*.c)
 add_library(adt ${SOURCES})
 
-# test
-set(TEST_DIR ${BASE_DIR}/test)
-FILE(GLOB TESTS ${TEST_DIR}/*.cpp)
-add_subdirectory(lib/googletest/googletest)
-add_executable(${PROJECT_NAME} ${TESTS})
-target_link_libraries(${PROJECT_NAME} adt gtest_main)
+# main
+add_executable(${PROJECT_NAME} main.c)
+target_link_libraries(${PROJECT_NAME} adt)

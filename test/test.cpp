@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 extern "C" {
 #include "vec.h"
-//#include "stdbool.h"
 #include <cstddef>
 }
 
