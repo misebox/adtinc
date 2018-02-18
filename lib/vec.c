@@ -106,16 +106,17 @@ vec_copy(vec_t v) {
 
 vec_t
 vec_copy_slice(vec_t v, uint64_t start, uint64_t end) {
-    if (v->length <= start || v->length < end || start >= end)
+    if (v->length <= start || v->length < end || start > end)
         return NULL;
-    vec_t dst = vec_new();
-    if (!dst)
+    vec_t v_dst = vec_new();
+    if (!v_dst)
         return NULL;
     uint64_t dst_length = end - start;
-    if (!vec_reserve(dst, dst_length))
-        return NULL;
+    if (v_dst->reserved < dst_length)
+        if (!vec_reserve(v_dst, dst_length))
+            return NULL;
     for (uint64_t i = 0; i < dst_length; i++)
-        dst->items[i] = v->items[start + i];
-    dst->length = dst_length;
-    return dst;
+        v_dst->items[i] = v->items[start + i];
+    v_dst->length = dst_length;
+    return v_dst;
 }

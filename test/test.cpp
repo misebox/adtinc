@@ -112,17 +112,23 @@ TEST_F(for_vec, test_vec_push_many_items)
     }
 }
 
-TEST_F(for_vec, test_vec_reserve_256K_bytes)
+TEST_F(for_vec, test_vec_reserve)
 {
     vec_t v = f_three_;
     uint64_t length = v->length;
-    uint64_t res = 0x10000;
-    EXPECT_TRUE(vec_reserve(v, res));
+    // No changes when enough already
+    uint64_t res = v->reserved;
+    EXPECT_TRUE(vec_reserve(v, v->reserved - 1));
     EXPECT_EQ(res, v->reserved);
+    // 256K bytes
+    EXPECT_TRUE(vec_reserve(v, 0x10000));
+    EXPECT_EQ(0x10000, v->reserved);
     EXPECT_EQ(length, v->length);
     EXPECT_EQ(&f_a_, v->items[0]);
     EXPECT_EQ(&f_b_, v->items[1]);
     EXPECT_EQ(&f_c_, v->items[2]);
+    // less than length
+    EXPECT_FALSE(vec_reserve(v, 2));
 }
 
 TEST_F(for_vec, test_vec_copy)
@@ -144,6 +150,7 @@ TEST_F(for_vec, test_vec_copy)
 TEST_F(for_vec, test_vec_copy_slice)
 {
     vec_t v = f_three_;
+    EXPECT_EQ(NULL, vec_copy_slice(v, 3, 4));
     vec_t v_dst = vec_copy_slice(v, 1, 2);
     EXPECT_NE(v, v_dst);
     EXPECT_NE((vec_t) NULL, v_dst);
@@ -151,5 +158,8 @@ TEST_F(for_vec, test_vec_copy_slice)
     EXPECT_EQ(1, v_dst->length);
     EXPECT_EQ(8, v_dst->reserved);
     vec_free(&v_dst);
-    EXPECT_EQ((vec_t) NULL, v_dst);
+    v_dst = vec_copy_slice(v, 1, 1);
+    EXPECT_NE((vec_t) NULL, v_dst);
+    EXPECT_EQ(0, v_dst->length);
+    vec_free(&v_dst);
 }
