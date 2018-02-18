@@ -76,3 +76,21 @@ TEST_F(fixtureName, test_vec_add_many_items)
     vec_free(&v);
     EXPECT_EQ((vec_t) NULL, v);
 }
+
+TEST_F(fixtureName, test_vec_reserve)
+{
+    vec_t v = vec_new();
+    ASSERT_NE((vec_t) NULL, v);
+    int64_t a = 99;
+    int64_t res = 0x10000;
+    EXPECT_TRUE(vec_add(v, &a));
+    EXPECT_EQ(&a, vec_get(v, 0));
+    EXPECT_TRUE(vec_reserve(v, res));
+    EXPECT_EQ(res, v->reserved);
+
+    EXPECT_EQ(1, v->length);
+    EXPECT_EQ(a, 99);
+    EXPECT_EQ(&a, vec_get(v, 0));
+    vec_free(&v);
+    EXPECT_EQ((vec_t) NULL, v);
+}

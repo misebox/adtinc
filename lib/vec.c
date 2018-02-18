@@ -31,18 +31,18 @@ bool
 vec_reserve(vec_t v, uint64_t reserve) {
     if (v->length > reserve)
         return false;
-    voidptr_t new_items = (voidptr_t )realloc(v->items, sizeof(voidptr_t ) * reserve);
-    if (new_items) {
-        v->items = new_items;
-        v->reserved = reserve;
-        if (v->reserved > v->length) {
-            uint64_t diff = v->reserved - v->length;
-            memset(new_items + v->length, 0, sizeof(voidptr_t) * diff);
-        }
-        return true;
-    } else {
+    voidptr_t *new_items = (voidptr_t )realloc(v->items, sizeof(voidptr_t ) * reserve);
+    if (new_items==NULL)
         return false;
+    v->items = new_items;
+    v->reserved = reserve;
+    if (v->reserved > v->length) {
+        uint64_t diff = v->reserved - v->length;
+        //printf("r %llu, l %llu, d %llu, start %p, empty %p, bytes %llu\n"
+        //      , v->reserved, v->length, diff, new_items, new_items + v->length, sizeof(voidptr_t) * diff);
+        memset(v->items + v->length, 0, sizeof(voidptr_t) * diff);
     }
+    return true;
 }
 
 bool
