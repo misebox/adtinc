@@ -150,8 +150,10 @@ TEST_F(for_vec, test_vec_copy)
 TEST_F(for_vec, test_vec_copy_slice)
 {
     vec_t v = f_three_;
+    vec_t v_dst;
+    v_dst = vec_copy_slice(v, 3, 4);
     EXPECT_EQ(NULL, vec_copy_slice(v, 3, 4));
-    vec_t v_dst = vec_copy_slice(v, 1, 2);
+    v_dst = vec_copy_slice(v, 1, 2);
     EXPECT_NE(v, v_dst);
     EXPECT_NE((vec_t) NULL, v_dst);
     EXPECT_EQ(&f_b_, vec_get(v_dst, 0));
@@ -161,5 +163,18 @@ TEST_F(for_vec, test_vec_copy_slice)
     v_dst = vec_copy_slice(v, 1, 1);
     EXPECT_NE((vec_t) NULL, v_dst);
     EXPECT_EQ(0, v_dst->length);
+    vec_free(&v_dst);
+}
+
+TEST_F(for_vec, test_vec_copy_slice_returns_false)
+{
+    vec_t v = f_empty_;
+    uint64_t res = v->reserved;
+    for (uint64_t i=0; i<res+1; i++)
+        vec_push(v, &f_a_);
+    vec_t v_dst = vec_copy_slice(v, 0, res+1);
+    EXPECT_NE((vec_t) NULL, v_dst);
+    EXPECT_EQ(res+1, v_dst->length);
+    EXPECT_LT(res, v_dst->reserved);
     vec_free(&v_dst);
 }
