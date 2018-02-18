@@ -14,7 +14,7 @@ int main() {
         items[i] = i * 10;
 
     for (uint64_t i = 0; i<9; i++)
-        if (!vec_add(v, &items[i]))
+        if (!vec_push(v, &items[i]))
             printf("failed");
 
     for (uint64_t i = 0; i<9; i++)

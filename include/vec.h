@@ -24,7 +24,7 @@ bool
     vec_reserve(vec_t v, uint64_t reserve);
 
 bool
-    vec_add(vec_t v, voidptr_t item);
+    vec_push(vec_t v, voidptr_t item);
 
 bool
     vec_del(vec_t v, uint64_t idx);
@@ -33,5 +33,5 @@ voidptr_t
     vec_get(vec_t v, uint64_t idx);
 
 voidptr_t
-    vec_pop(vec_t v, uint64_t idx);
+    vec_pop(vec_t v);
 

@@ -38,15 +38,13 @@ vec_reserve(vec_t v, uint64_t reserve) {
     v->reserved = reserve;
     if (v->reserved > v->length) {
         uint64_t diff = v->reserved - v->length;
-        //printf("r %llu, l %llu, d %llu, start %p, empty %p, bytes %llu\n"
-        //      , v->reserved, v->length, diff, new_items, new_items + v->length, sizeof(voidptr_t) * diff);
         memset(v->items + v->length, 0, sizeof(voidptr_t) * diff);
     }
     return true;
 }
 
 bool
-vec_add(vec_t v, voidptr_t item) {
+vec_push(vec_t v, voidptr_t item) {
     if (v->reserved == v->length) {
         uint64_t reserve = v->length * 2;
         if (!vec_reserve(v, reserve))
@@ -79,10 +77,13 @@ vec_get(vec_t v, uint64_t idx) {
 }
 
 voidptr_t
-vec_pop(vec_t v, uint64_t idx) {
+vec_pop(vec_t v) {
+    if (v->length == 0)
+        return NULL;
+    uint64_t idx = v->length-1;
     voidptr_t item = vec_get(v, idx);
-    if (item)
-        vec_del(v, idx);
+    if (item && !vec_del(v, idx))
+        return NULL;
     return item;
 }
 
