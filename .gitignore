@@ -51,6 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# google-test
+# test
 build/*
 !build/.gitkeep
+*.profdata
+*.profraw
