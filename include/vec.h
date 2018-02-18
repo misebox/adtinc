@@ -43,3 +43,6 @@ vec_t
 
 vec_t
     vec_copy_slice(vec_t v, uint64_t start, uint64_t end);
+
+bool
+    vec_find_ptr(vec_t v, uint64_t *idx, voidptr_t target);

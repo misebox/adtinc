@@ -178,3 +178,31 @@ TEST_F(for_vec, test_vec_copy_slice_returns_false)
     EXPECT_LT(res, v_dst->reserved);
     vec_free(&v_dst);
 }
+
+TEST_F(for_vec, test_vec_find_ptr)
+{
+    bool found;
+    uint64_t v_idx;
+
+    vec_t v = f_three_;
+    v_idx = -1;
+    found = vec_find_ptr(v, &v_idx, &f_a_);
+    EXPECT_TRUE(found);
+    EXPECT_EQ(v_idx, 0);
+
+    v_idx = -1;
+    found = vec_find_ptr(v, &v_idx, &f_b_);
+    EXPECT_TRUE(found);
+    EXPECT_EQ(v_idx, 1);
+
+    v_idx = -1;
+    found = vec_find_ptr(v, &v_idx, &f_c_);
+    EXPECT_TRUE(found);
+    EXPECT_EQ(v_idx, 2);
+
+    uint64_t x;
+    v_idx = -1;
+    found = vec_find_ptr(v, &v_idx, &x);
+    EXPECT_FALSE(found);
+    EXPECT_EQ(v_idx, -1); // no change
+}

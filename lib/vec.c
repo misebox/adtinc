@@ -120,3 +120,13 @@ vec_copy_slice(vec_t v, uint64_t start, uint64_t end) {
     v_dst->length = dst_length;
     return v_dst;
 }
+
+bool
+vec_find_ptr(vec_t v, uint64_t *idx, voidptr_t target) {
+    for (uint64_t i = 0; i < v->length; i++)
+        if (v->items[i] == target) {
+            *idx = i;
+            return true;
+        }
+    return false;
+}
