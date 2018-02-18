@@ -27,6 +27,9 @@ bool
     vec_push(vec_t v, voidptr_t item);
 
 bool
+    vec_insert(vec_t v, voidptr_t item, uint64_t pos);
+
+bool
     vec_del(vec_t v, uint64_t idx);
 
 voidptr_t

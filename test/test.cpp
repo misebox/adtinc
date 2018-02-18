@@ -40,6 +40,25 @@ TEST_F(fixtureName, test_vec_push_and_get)
     EXPECT_EQ((vec_t) NULL, v);
 }
 
+TEST_F(fixtureName, test_vec_insert)
+{
+    vec_t v = vec_new();
+    ASSERT_NE((vec_t) NULL, v);
+    int64_t a = 1, b = 2, c = 3, d = 4;
+    EXPECT_TRUE(vec_insert(v, &a, 0));
+    EXPECT_TRUE(vec_insert(v, &c, 1));
+    EXPECT_TRUE(vec_insert(v, &b, 1));
+    EXPECT_FALSE(vec_insert(v, &d, 4));
+    EXPECT_EQ(&a, vec_get(v, 0));
+    EXPECT_EQ(&b, vec_get(v, 1));
+    EXPECT_EQ(&c, vec_get(v, 2));
+    EXPECT_EQ(NULL, vec_get(v, 3));
+    EXPECT_EQ(3, v->length);
+    EXPECT_EQ(8, v->reserved);
+    vec_free(&v);
+    EXPECT_EQ((vec_t) NULL, v);
+}
+
 TEST_F(fixtureName, test_vec_del)
 {
     vec_t v = vec_new();

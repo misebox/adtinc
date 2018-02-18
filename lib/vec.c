@@ -45,12 +45,22 @@ vec_reserve(vec_t v, uint64_t reserve) {
 
 bool
 vec_push(vec_t v, voidptr_t item) {
+    return vec_insert(v, item, v->length);
+}
+
+bool
+vec_insert(vec_t v, voidptr_t item, uint64_t pos) {
+    if (v->length < pos)
+        return false;
     if (v->reserved == v->length) {
         uint64_t reserve = v->length * 2;
         if (!vec_reserve(v, reserve))
             return false;
     }
-    v->items[v->length] = item;
+    for (uint64_t i = v->length; i > pos; i--)
+        v->items[i] = v->items[i-1];
+
+    v->items[pos] = item;
     v->length++;
     return true;
 }
