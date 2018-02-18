@@ -31,6 +31,8 @@ bool
 vec_reserve(vec_t v, uint64_t reserve) {
     if (v->length > reserve)
         return false;
+    if (v->reserved >= reserve)
+        return true;
     voidptr_t *new_items = (voidptr_t )realloc(v->items, sizeof(voidptr_t ) * reserve);
     if (new_items==NULL)
         return false;
@@ -97,3 +99,23 @@ vec_pop(vec_t v) {
     return item;
 }
 
+vec_t
+vec_copy(vec_t v) {
+    return vec_copy_slice(v, 0, v->length);
+}
+
+vec_t
+vec_copy_slice(vec_t v, uint64_t start, uint64_t end) {
+    if (v->length <= start || v->length < end || start >= end)
+        return NULL;
+    vec_t dst = vec_new();
+    if (!dst)
+        return NULL;
+    uint64_t dst_length = end - start;
+    if (!vec_reserve(dst, dst_length))
+        return NULL;
+    for (uint64_t i = 0; i < dst_length; i++)
+        dst->items[i] = v->items[start + i];
+    dst->length = dst_length;
+    return dst;
+}

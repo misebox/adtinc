@@ -38,3 +38,8 @@ voidptr_t
 voidptr_t
     vec_pop(vec_t v);
 
+vec_t
+    vec_copy(vec_t v);
+
+vec_t
+    vec_copy_slice(vec_t v, uint64_t start, uint64_t end);
