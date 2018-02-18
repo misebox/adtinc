@@ -10,13 +10,17 @@ void show_item(vec_t v, uint64_t idx) {
 int main() {
     vec_t v = vec_new();
     uint64_t items[17];
-    for (uint64_t i = 0; i<17; i++) {
+    for (uint64_t i = 0; i<17; i++)
         items[i] = i * 10;
-        if (vec_add(v, &items[i]))
-            show_item(v, i);
-        else
+
+    for (uint64_t i = 0; i<9; i++)
+        if (!vec_add(v, &items[i]))
             printf("failed");
-    }
+
+    for (uint64_t i = 0; i<9; i++)
+        show_item(v, i);
+
+    vec_free(&v);
     return 0;
 }
 
