@@ -7,3 +7,9 @@
 $ make test
 ```
 
+## coverage
+
+```
+$ make cov
+```
+
