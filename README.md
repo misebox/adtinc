@@ -12,3 +12,9 @@ $ git clone --recursive https://github.com/misebox/libadt.git && cd libadt && ma
 $ make test
 ```
 
+## coverage
+
+```
+$ make cov
+```
+
