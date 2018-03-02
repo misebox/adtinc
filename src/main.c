@@ -2,12 +2,16 @@
 #include <stdbool.h>
 #include <time.h>
 #include "vec.h"
+#include "u8.h"
 
 void show_item(vec_t v, uint64_t idx) {
     uint64_t item =  *(uint64_t *)vec_get(v, idx);
     printf("length: %2llu, reserved: %2llu, value: %3llu, ptr: %p\n", v->length, v->reserved, item, v->items[idx]);
 }
 
+uint8_t aaa(int16_t a) {
+    return a;
+}
 int main() {
     vec_t v = vec_new();
     uint64_t items[0x100000];
@@ -33,6 +37,16 @@ int main() {
     printf("%.6f秒かかりました\n",(double)(end-start)/CLOCKS_PER_SEC);
 
     vec_free(&v);
+    uint16_t m = 11;
+    for (uint16_t i = 0; i< 16; i++)
+        printf("%d: %d\n", i, m *= 13);
+
+    const char *str = u8"abcde αβγδεζη あいうえお 🍣🍺🍀";
+    printf("string: [%s], length:%d\n", str, u8_length(str));
+    char s[2];
+    s[0] = 0x80;
+    s[1] = 0;
+    printf("%u\n", u8_length(s));
     return 0;
 }
 
