@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 project(libadt-test)
 
 # for coverage
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fprofile-instr-generate -fcoverage-mapping")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -fprofile-instr-generate -fcoverage-mapping")
 set(CMAKE_EXE_LINKER_FLAGS=" -fprofile-instr-generate -fcoverage-mapping")
 
 # Change here if test directory moves

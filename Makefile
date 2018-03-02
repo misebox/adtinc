@@ -24,7 +24,7 @@ build/test/Makefile: test/CMakeLists.txt
 
 # for coverage
 cov: profile
-	llvm-cov report -use-color=true -instr-profile default.profdata build/test/libadt-test -show-functions=true lib/vec.c >build/cov/report.txt
+	llvm-cov report -use-color=true -instr-profile default.profdata build/test/libadt-test -show-functions=true lib/*.c >build/cov/report.txt
 	less -R build/cov/report.txt
 	llvm-cov show -use-color=true -instr-profile=default.profdata build/test/libadt-test  lib/ | less -R
 profile: test
