@@ -1,4 +1,4 @@
-# adtinc
+# libadt
 
 ## setup
 
