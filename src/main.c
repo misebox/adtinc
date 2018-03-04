@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
 #include "vec.h"
 #include "u8.h"
 
@@ -47,6 +48,7 @@ int main() {
     s[0] = 0x80;
     s[1] = 0;
     printf("%u\n", u8_length(s));
+    printf("%s %lu %u\n", u8"🍣🍺🍀", strlen(u8"🍣🍺🍀"),  u8_length(u8"🍣🍺🍀"));
     return 0;
 }
 

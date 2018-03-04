@@ -4,6 +4,7 @@
 #include <string.h>
 #include "u8.h"
 
+
 // utf-8 string
 u8size_t
 u8_length(const char *s) {
@@ -26,28 +27,44 @@ u8_length(const char *s) {
     }
     return length;
 }
-//u8_t
-//u8_new() {
-//    u8_t u = (u8_t)calloc(1, sizeof(struct _u8));
-//    if (u) {
-//        u->reserved = 8;
-//        u->bytes = (uint8ptr_t)calloc(u->reserved, sizeof(uint8ptr_t));
-//        u->length = 0;
-//    }
-//    return u;
-//}
-//
-//void
-//u8_free(u8_t *_u) {
-//    u8_t u = *_u;
-//    if (u) {
-//        free(u->bytes);
-//        u->bytes = NULL;
-//    }
-//    free(u);
-//    *_u = (u8_t)NULL;
-//}
-//
+
+u8_t
+u8_new(const char* src) {
+    u8_t u = (u8_t)malloc(sizeof(struct _u8));
+    if (u) {
+        // get length
+        u->length = u8_length(src);
+        if (u->length == u8_none) {
+            goto failed;
+        }
+        // required byte length
+        u->reserved = strnlen(src, u->length * 4) + 1;
+
+        // allocate memory
+        u->bytes = (uint8ptr_t)malloc(u->reserved);
+        if (!u->bytes)
+            goto failed;
+        // set data
+        memcpy(u->bytes, src, u->reserved);
+    }
+    return u;
+
+  failed:
+    free(u);
+    return NULL;
+}
+
+void
+u8_free(u8_t *_u) {
+    u8_t u = *_u;
+    if (u) {
+        free(u->bytes);
+        u->bytes = NULL;
+    }
+    free(*_u);
+    *_u = (u8_t)NULL;
+}
+
 //bool
 //u8_reserve(u8_t u, u8size_t reserve) {
 //    if (u->length > reserve)
