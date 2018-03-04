@@ -14,9 +14,11 @@ u8_length(const char *s) {
             || (0xF5 <= c)
             || (uintptr_t)s >= (uintptr_t)max
         ) {
+            // Found an invalid byte or exceeded max length
             length = u8_none;
             break;
         }
+        // Forward pointer to next character
         s +=  ((c & 0x80) == 0)
             + ((c & 0xE0) == 0xC0) * 2
             + ((c & 0xF0) == 0xE0) * 3
