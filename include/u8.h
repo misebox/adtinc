@@ -11,6 +11,8 @@ typedef uint8_t *uint8ptr_t;
 struct _u8 {
     // reserved size for bytes
     u8size_t reserved;
+    // actual size of bytes
+    u8size_t size;
     // length in UTF-8
     u8size_t length;
     // bytes array for UTF-8 string
@@ -48,3 +50,14 @@ u8_t
  */
 void
 u8_free(u8_t *_u);
+
+/**
+ * Reserve size of bytes in u8_t object.
+ * Useful to avoid frequently reallocating for bytes.
+ * Returns true if success else false.
+ * usage:
+ *     u8_t u = u8_new(u8"🍣🍣🍣");
+ *     if (!u8_reserve(u, 30)) printf("failed\n");
+ */
+bool
+    u8_reserve(u8_t u, u8size_t reserve);

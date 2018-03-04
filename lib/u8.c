@@ -33,12 +33,15 @@ u8_new(const char* src) {
     u8_t u = (u8_t)malloc(sizeof(struct _u8));
     if (u) {
         // get length
-        u->length = u8_length(src);
-        if (u->length == u8_none) {
+        u8size_t len = u8_length(src);
+        if (len == u8_none) {
             goto failed;
         }
-        // required byte length
-        u->reserved = strnlen(src, u->length * 4) + 1;
+        u->length = len;
+        // required byte size
+        u8size_t str_size = strnlen(src, u->length * 4);
+        u->size = str_size + 1; // for terminating character
+        u->reserved = str_size * 2 + 1;
 
         // allocate memory
         u->bytes = (uint8ptr_t)malloc(u->reserved);
@@ -65,43 +68,20 @@ u8_free(u8_t *_u) {
     *_u = (u8_t)NULL;
 }
 
-//bool
-//u8_reserve(u8_t u, u8size_t reserve) {
-//    if (u->length > reserve)
-//        return false;
-//    if (u->reserved >= reserve)
-//        return true;
-//    uint8ptr_t *new_bytes = (uint8ptr_t )realloc(u->bytes, sizeof(uint8ptr_t ) * reserve);
-//    if (new_bytes==NULL)
-//        return false;
-//    u->bytes = new_bytes;
-//    u->reserved = reserve;
-//    if (u->reserved > u->length) {
-//        u8size_t diff = u->reserved - u->length;
-//        memset(u->bytes + u->length, 0, sizeof(uint8ptr_t) * diff);
-//    }
-//    return true;
-//}
-//
-//bool
-//u8_push(u8_t u, uint8ptr_t bytes) {
-//    return u8_insert(u, item, u->length);
-//}
-//
-//bool
-//u8_insert(u8_t u, uint8ptr_t item, uint64_t pos) {
-//    if (u->length < pos)
-//        return false;
-//    if (u->reserved == u->length) {
-//        uint64_t reserve = u->length * 2;
-//        if (!u8_reserve(u, reserve))
-//            return false;
-//    }
-//    for (uint64_t i = u->length; i > pos; i--)
-//        u->bytes[i] = u->bytes[i-1];
-//
-//    u->bytes[pos] = item;
-//    u->length++;
-//    return true;
-//}
-
+bool
+u8_reserve(u8_t u, u8size_t reserve) {
+    if (u->size > reserve)
+        return false;
+    if (u->reserved >= reserve)
+        return true;
+    uint8ptr_t new_bytes = (uint8ptr_t)realloc(u->bytes, reserve);
+    if (!new_bytes)
+        return false;
+    u->bytes = new_bytes;
+    u->reserved = reserve;
+    if (u->reserved > u->size) {
+        u8size_t diff = u->reserved - u->size;
+        memset(u->bytes + u->size, 0, diff);
+    }
+    return true;
+}
