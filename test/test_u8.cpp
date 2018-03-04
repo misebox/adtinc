@@ -27,10 +27,12 @@ protected:
     u8size_t f_expects_size_ = 11;
 
     virtual void SetUp(){
-        f_maxlength_ = (char*)malloc(u8_maxlength);
+        f_maxlength_ = (char*)malloc(u8_maxlength + 1);
         memset(f_maxlength_, 'X', u8_maxlength);
-        f_overlength_ = (char*)malloc(u8_maxlength+1);
-        memset(f_overlength_, 'X', u8_maxlength+1);
+        f_maxlength_[u8_maxlength] = '\0';
+        f_overlength_ = (char*)malloc(u8_maxlength+2);
+        memset(f_overlength_, 'X', u8_maxlength + 1);
+        f_overlength_[u8_maxlength+1] = '\0';
         f_expects_[0] = std::make_tuple(f_zerochar_, 0, 1);
         f_expects_[1] = std::make_tuple(f_1bytes_, 1, 2);
         f_expects_[2] = std::make_tuple(f_2bytes_, 1, 3);
