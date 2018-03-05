@@ -4,14 +4,14 @@ all: main
 clean:
 	rm -r build/*
 
-# for main
-main: build/main/libadt-main
-	build/main/libadt-main
-build/main/libadt-main: lib/*.c include/*.h src/*.c build/main/Makefile
-	cd build/main && make clean && make
-build/main/Makefile: src/CMakeLists.txt
-	mkdir -p build/main
-	cd build/main && cmake ../../src
+main: sample
+# for sample executables
+sample: lib/*.c include/*.h sample/*.c build/sample/Makefile
+	cd build/sample && make clean && make && cd -
+	@ for x in $$(ls build/sample/*_sample); do echo ---- $$x; $$x; done
+build/sample/Makefile: sample/CMakeLists.txt
+	mkdir -p build/sample
+	cd build/sample && cmake ../../sample
 
 # for test
 test: build/test/libadt-test
