@@ -34,15 +34,15 @@ protected:
         memset(f_overlength_, 'X', u8_maxlength + 1);
         f_overlength_[u8_maxlength+1] = '\0';
         f_expects_[0] = std::make_tuple(f_zerochar_, 0, 1);
-        f_expects_[1] = std::make_tuple(f_1bytes_, 1, 3);
-        f_expects_[2] = std::make_tuple(f_2bytes_, 1, 5);
-        f_expects_[3] = std::make_tuple(f_3bytes_, 1, 7);
-        f_expects_[4] = std::make_tuple(f_4bytes_, 1, 9);
-        f_expects_[5] = std::make_tuple(f_1bytes_x3_, 3, 7);
-        f_expects_[6] = std::make_tuple(f_2bytes_x3_, 3, 13);
-        f_expects_[7] = std::make_tuple(f_3bytes_x3_, 3, 19);
-        f_expects_[8] = std::make_tuple(f_4bytes_x3_, 3, 25);
-        f_expects_[9] = std::make_tuple(f_mixed_12_, 12, 61);
+        f_expects_[1] = std::make_tuple(f_1bytes_, 1, 2);
+        f_expects_[2] = std::make_tuple(f_2bytes_, 1, 3);
+        f_expects_[3] = std::make_tuple(f_3bytes_, 1, 4);
+        f_expects_[4] = std::make_tuple(f_4bytes_, 1, 5);
+        f_expects_[5] = std::make_tuple(f_1bytes_x3_, 3, 4);
+        f_expects_[6] = std::make_tuple(f_2bytes_x3_, 3, 7);
+        f_expects_[7] = std::make_tuple(f_3bytes_x3_, 3, 10);
+        f_expects_[8] = std::make_tuple(f_4bytes_x3_, 3, 13);
+        f_expects_[9] = std::make_tuple(f_mixed_12_, 12, 31);
     }
     virtual void TearDown(){
         free(f_maxlength_);
@@ -79,7 +79,8 @@ TEST_F(for_u8, test_u8_new_and_free)
         u8_t u = u8_new(src);
         ASSERT_NE((u8_t) NULL, u);
         EXPECT_EQ(u->length, std::get<1>(f_expects_[i]));
-        EXPECT_EQ(u->reserved, std::get<2>(f_expects_[i]));
+        EXPECT_EQ(u->size, std::get<2>(f_expects_[i]));
+        EXPECT_EQ(u->reserved, std::get<2>(f_expects_[i]) * 2 -1);
         EXPECT_STREQ((const char *)u->bytes, src);
         u8_free(&u);
         EXPECT_EQ((u8_t) NULL, u);
@@ -106,4 +107,30 @@ TEST_F(for_u8, test_u8_reserve)
     EXPECT_STREQ((const char *)u->bytes, f_2bytes_x3_);
     u8_free(&u);
     ASSERT_EQ((u8_t) NULL, u);
+}
+
+TEST_F(for_u8, test_u8_concat)
+{
+    for (uint8_t si=0; si<f_expects_size_; si++) {
+        u8_t src = u8_new((const char *)std::get<0>(f_expects_[si]));
+        ASSERT_NE((u8_t) NULL, src);
+        for (uint8_t di=0; di<f_expects_size_; di++) {
+            u8_t dst = u8_new((const char *)std::get<0>(f_expects_[di]));
+            ASSERT_NE((u8_t) NULL, dst);
+            u8size_t length = std::get<1>(f_expects_[di]) + std::get<1>(f_expects_[si]);
+            u8size_t size = std::get<2>(f_expects_[di]) + std::get<2>(f_expects_[si]) -1;
+            char *expect = (char *)malloc(size);
+            memcpy(expect, dst->bytes, dst->size - 1);
+            memcpy(expect + dst->size - 1, src->bytes, src->size);
+            ASSERT_TRUE(u8_concat(dst, src));
+            EXPECT_STREQ((const char *)expect, (const char *)dst->bytes);
+            ASSERT_EQ(dst->length, length);
+            ASSERT_EQ(dst->size, size);
+            ASSERT_TRUE(dst->reserved >= size);
+            u8_free(&dst);
+            ASSERT_EQ((u8_t) NULL, dst);
+        }
+        u8_free(&src);
+        ASSERT_EQ((u8_t) NULL, src);
+    }
 }

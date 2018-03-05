@@ -85,3 +85,19 @@ u8_reserve(u8_t u, u8size_t reserve) {
     }
     return true;
 }
+
+bool
+u8_concat(u8_t dst, u8_t src) {
+    u8size_t length = dst->length + src->length;
+    if (u8_maxlength < length)
+        return true;
+    u8size_t size = dst->size + src->size - 1;
+    if (dst->reserved < size) {
+        if (!u8_reserve(dst, size))
+            return false;
+    }
+    memcpy(dst->bytes + dst->size - 1, src->bytes, src->size);
+    dst->size = size;
+    dst->length = length;
+    return true;
+}

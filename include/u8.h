@@ -61,3 +61,17 @@ u8_free(u8_t *_u);
  */
 bool
     u8_reserve(u8_t u, u8size_t reserve);
+
+
+/**
+ * Concatenate two u8_t objects.
+ * Second object connects to the tail of first object.
+ * Allocate required size of memory if necessary.
+ * Returns true if success else false.
+ * usage:
+ *     u8_t dst = u8_new(u8"🍣🍣🍣");
+ *     u8_t src = u8_new(u8"🍺🍺🍺");
+ *     bool ok = u8_concat(dst, src); // 🍣🍣🍣🍺🍺🍺
+ */
+bool
+    u8_concat(u8_t dst, u8_t src);
