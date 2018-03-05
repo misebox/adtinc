@@ -65,7 +65,7 @@ bool
 
 /**
  * Concatenate two u8_t objects.
- * Second object connects to the tail of first object.
+ * Second object is copied and connected to the tail of first object.
  * Allocate required size of memory if necessary.
  * Returns true if success else false.
  * usage:
