@@ -77,7 +77,8 @@ bool
     u8_extend(u8_t dst, u8_t src);
 
 /**
- * Copy substring of second object into first object from start_pos to end_pos.
+ * Copy substring of second object into first object.
+ * Substring is from start_pos to end_pos in second object.
  * Reverse index like -5 (it means where length minus 5) is allowed.
  * usage:
  *     u8_t src = u8_new(u8"🍣🍣🍣🍺🍺🍺");
