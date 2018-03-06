@@ -75,3 +75,15 @@ bool
  */
 bool
     u8_extend(u8_t dst, u8_t src);
+
+/**
+ * Copy substring of second object into first object from start_pos to end_pos.
+ * Reverse index like -5 (it means where length minus 5) is allowed.
+ * usage:
+ *     u8_t src = u8_new(u8"🍣🍣🍣🍺🍺🍺");
+ *     u8_t dst = u8_new(u8"");
+ *     if (u8_slice(dst, src, 2, 4)) printf("%s\n", dst->bytes); // 🍣🍺
+ *     if (u8_slice(dst, src, 1, -1)) printf("%s\n", dst->bytes); // 🍣🍣🍺🍺
+ */
+bool
+    u8_slice(u8_t dst, u8_t src, int32_t start_pos, int32_t end_pos);
