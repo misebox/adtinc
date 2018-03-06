@@ -71,7 +71,7 @@ bool
  * usage:
  *     u8_t dst = u8_new(u8"🍣🍣🍣");
  *     u8_t src = u8_new(u8"🍺🍺🍺");
- *     bool ok = u8_concat(dst, src); // 🍣🍣🍣🍺🍺🍺
+ *     bool ok = u8_extend(dst, src); // 🍣🍣🍣🍺🍺🍺
  */
 bool
-    u8_concat(u8_t dst, u8_t src);
+    u8_extend(u8_t dst, u8_t src);

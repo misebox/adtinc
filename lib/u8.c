@@ -87,7 +87,7 @@ u8_reserve(u8_t u, u8size_t reserve) {
 }
 
 bool
-u8_concat(u8_t dst, u8_t src) {
+u8_extend(u8_t dst, u8_t src) {
     u8size_t length = dst->length + src->length;
     if (u8_maxlength < length)
         return true;

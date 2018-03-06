@@ -109,7 +109,7 @@ TEST_F(for_u8, test_u8_reserve)
     ASSERT_EQ((u8_t) NULL, u);
 }
 
-TEST_F(for_u8, test_u8_concat)
+TEST_F(for_u8, test_u8_extend)
 {
     for (uint8_t si=0; si<f_expects_size_; si++) {
         u8_t src = u8_new((const char *)std::get<0>(f_expects_[si]));
@@ -122,7 +122,7 @@ TEST_F(for_u8, test_u8_concat)
             char *expect = (char *)malloc(size);
             memcpy(expect, dst->bytes, dst->size - 1);
             memcpy(expect + dst->size - 1, src->bytes, src->size);
-            ASSERT_TRUE(u8_concat(dst, src));
+            ASSERT_TRUE(u8_extend(dst, src));
             EXPECT_STREQ((const char *)expect, (const char *)dst->bytes);
             ASSERT_EQ(dst->length, length);
             ASSERT_EQ(dst->size, size);
