@@ -6,7 +6,7 @@
 // vector contains generic pointer
 vec_t
 vec_new() {
-    vec_t v = (vec_t)calloc(1, sizeof(struct _vector));
+    vec_t v = (vec_t)calloc(1, sizeof(vector));
     if (v) {
         v->reserved = 8;
         v->items = (voidptr_t)calloc(v->reserved, sizeof(voidptr_t));
