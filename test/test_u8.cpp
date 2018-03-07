@@ -76,27 +76,27 @@ TEST_F(for_u8, test_u8_new_and_free)
 {
     for (int i=0; i<f_expects_size_; i++) {
         const char *src = std::get<0>(f_expects_[i]);
-        u8_t u = u8_new(src);
-        ASSERT_NE((u8_t) NULL, u);
+        pu8 u = u8_new(src);
+        ASSERT_NE((pu8) NULL, u);
         EXPECT_EQ(u->length, std::get<1>(f_expects_[i]));
         EXPECT_EQ(u->size, std::get<2>(f_expects_[i]));
         EXPECT_EQ(u->reserved, std::get<2>(f_expects_[i]) * 2 -1);
         EXPECT_STREQ((const char *)u->bytes, src);
         u8_free(&u);
-        EXPECT_EQ((u8_t) NULL, u);
+        EXPECT_EQ((pu8) NULL, u);
     }
-    u8_t u = u8_new(f_maxlength_);
-    ASSERT_NE((u8_t) NULL, u);
+    pu8 u = u8_new(f_maxlength_);
+    ASSERT_NE((pu8) NULL, u);
     EXPECT_EQ(u->length, u8_maxlength);
     EXPECT_EQ(u->reserved, u8_maxlength * 2 + 1);
     EXPECT_STREQ((const char *)u->bytes, f_maxlength_);
     u8_free(&u);
-    ASSERT_EQ((u8_t) NULL, u);
+    ASSERT_EQ((pu8) NULL, u);
 }
 
 TEST_F(for_u8, test_u8_reserve)
 {
-    u8_t u;
+    pu8 u;
     u = u8_new(f_2bytes_x3_);
     EXPECT_EQ(u->reserved, 13);
     EXPECT_FALSE(u8_reserve(u, 6));
@@ -106,17 +106,17 @@ TEST_F(for_u8, test_u8_reserve)
     EXPECT_EQ(u->reserved, 100);
     EXPECT_STREQ((const char *)u->bytes, f_2bytes_x3_);
     u8_free(&u);
-    ASSERT_EQ((u8_t) NULL, u);
+    ASSERT_EQ((pu8) NULL, u);
 }
 
 TEST_F(for_u8, test_u8_extend)
 {
     for (uint8_t si=0; si<f_expects_size_; si++) {
-        u8_t src = u8_new((const char *)std::get<0>(f_expects_[si]));
-        ASSERT_NE((u8_t) NULL, src);
+        pu8 src = u8_new((const char *)std::get<0>(f_expects_[si]));
+        ASSERT_NE((pu8) NULL, src);
         for (uint8_t di=0; di<f_expects_size_; di++) {
-            u8_t dst = u8_new((const char *)std::get<0>(f_expects_[di]));
-            ASSERT_NE((u8_t) NULL, dst);
+            pu8 dst = u8_new((const char *)std::get<0>(f_expects_[di]));
+            ASSERT_NE((pu8) NULL, dst);
             u8size_t length = std::get<1>(f_expects_[di]) + std::get<1>(f_expects_[si]);
             u8size_t size = std::get<2>(f_expects_[di]) + std::get<2>(f_expects_[si]) -1;
             char *expect = (char *)malloc(size);
@@ -128,9 +128,9 @@ TEST_F(for_u8, test_u8_extend)
             ASSERT_EQ(dst->size, size);
             ASSERT_TRUE(dst->reserved >= size);
             u8_free(&dst);
-            ASSERT_EQ((u8_t) NULL, dst);
+            ASSERT_EQ((pu8) NULL, dst);
         }
         u8_free(&src);
-        ASSERT_EQ((u8_t) NULL, src);
+        ASSERT_EQ((pu8) NULL, src);
     }
 }

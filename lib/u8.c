@@ -35,9 +35,9 @@ u8_length(const char *s) {
     return length;
 }
 
-u8_t
+pu8
 u8_new(const char* src) {
-    u8_t u = (u8_t)malloc(sizeof(struct _u8));
+    pu8 u = (pu8)malloc(sizeof(struct _u8));
     if (u) {
         // get length
         u8size_t len = u8_length(src);
@@ -65,18 +65,18 @@ u8_new(const char* src) {
 }
 
 void
-u8_free(u8_t *_u) {
-    u8_t u = *_u;
+u8_free(pu8 *_u) {
+    pu8 u = *_u;
     if (u) {
         free(u->bytes);
         u->bytes = NULL;
     }
     free(*_u);
-    *_u = (u8_t)NULL;
+    *_u = (pu8)NULL;
 }
 
 bool
-u8_reserve(u8_t u, u8size_t reserve) {
+u8_reserve(pu8 u, u8size_t reserve) {
     if (u->size > reserve)
         return false;
     if (u->reserved >= reserve)
@@ -94,7 +94,7 @@ u8_reserve(u8_t u, u8size_t reserve) {
 }
 
 bool
-u8_extend(u8_t dst, u8_t src) {
+u8_extend(pu8 dst, pu8 src) {
     u8size_t length = dst->length + src->length;
     if (u8_maxlength < length)
         return true;
@@ -110,7 +110,7 @@ u8_extend(u8_t dst, u8_t src) {
 }
 
 bool
-u8_slice(u8_t dst, u8_t src, int32_t start_pos, int32_t end_pos) {
+u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
     u8size_t start = start_pos >= 0 ? start_pos : src->length - abs(start_pos);
     u8size_t end = end_pos >= 0 ? end_pos : src->length - abs(end_pos);
     if (start > src->length || end > src->length || start > end)

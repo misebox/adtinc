@@ -4,13 +4,13 @@
 #include <string.h>
 #include "vec.h"
 
-void show_item(vec_t v, uint64_t idx) {
+void show_item(pvec v, uint64_t idx) {
     uint64_t item =  *(uint64_t *)vec_get(v, idx);
     printf("index: %llu, length: %2llu, reserved: %2llu, value: %3llu, ptr: %p\n", idx, v->length, v->reserved, item, v->items[idx]);
 }
 
 int main() {
-    vec_t v = vec_new();
+    pvec v = vec_new();
     uint64_t items[0x10000];
     for (uint64_t i = 0; i<0x10000; i++)
         items[i] = i * 10;

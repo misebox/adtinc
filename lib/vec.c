@@ -4,9 +4,9 @@
 #include "vec.h"
 
 // vector contains generic pointer
-vec_t
+pvec
 vec_new() {
-    vec_t v = (vec_t)calloc(1, sizeof(vector));
+    pvec v = (pvec)calloc(1, sizeof(vec_t));
     if (v) {
         v->reserved = 8;
         v->items = (voidptr_t)calloc(v->reserved, sizeof(voidptr_t));
@@ -16,18 +16,18 @@ vec_new() {
 }
 
 void
-vec_free(vec_t *_v) {
-    vec_t v = *_v;
+vec_free(pvec *_v) {
+    pvec v = *_v;
     if (v) {
         free(v->items);
         v->items = NULL;
     }
     free(v);
-    *_v = (vec_t)NULL;
+    *_v = (pvec)NULL;
 }
 
 bool
-vec_reserve(vec_t v, uint64_t reserve) {
+vec_reserve(pvec v, uint64_t reserve) {
     if (v->length > reserve)
         return false;
     if (v->reserved >= reserve)
@@ -45,12 +45,12 @@ vec_reserve(vec_t v, uint64_t reserve) {
 }
 
 bool
-vec_push(vec_t v, voidptr_t item) {
+vec_push(pvec v, voidptr_t item) {
     return vec_insert(v, item, v->length);
 }
 
 bool
-vec_insert(vec_t v, voidptr_t item, uint64_t pos) {
+vec_insert(pvec v, voidptr_t item, uint64_t pos) {
     if (v->length < pos)
         return false;
     if (v->reserved == v->length) {
@@ -67,7 +67,7 @@ vec_insert(vec_t v, voidptr_t item, uint64_t pos) {
 }
 
 bool
-vec_del(vec_t v, uint64_t idx) {
+vec_del(pvec v, uint64_t idx) {
     if (v->length <= idx)
         return false;
 
@@ -79,7 +79,7 @@ vec_del(vec_t v, uint64_t idx) {
 }
 
 voidptr_t
-vec_get(vec_t v, uint64_t idx) {
+vec_get(pvec v, uint64_t idx) {
     voidptr_t item = NULL;
     if (v->length > idx) {
         item = v->items[idx];
@@ -88,7 +88,7 @@ vec_get(vec_t v, uint64_t idx) {
 }
 
 voidptr_t
-vec_pop(vec_t v) {
+vec_pop(pvec v) {
     if (v->length == 0)
         return NULL;
     uint64_t idx = v->length-1;
@@ -98,16 +98,16 @@ vec_pop(vec_t v) {
     return item;
 }
 
-vec_t
-vec_copy(vec_t v) {
+pvec
+vec_copy(pvec v) {
     return vec_copy_slice(v, 0, v->length);
 }
 
-vec_t
-vec_copy_slice(vec_t v, uint64_t start, uint64_t end) {
+pvec
+vec_copy_slice(pvec v, uint64_t start, uint64_t end) {
     if (v->length <= start || v->length < end || start > end)
         return NULL;
-    vec_t v_dst = vec_new();
+    pvec v_dst = vec_new();
     if (!v_dst)
         return NULL;
     uint64_t dst_length = end - start;
@@ -121,7 +121,7 @@ vec_copy_slice(vec_t v, uint64_t start, uint64_t end) {
 }
 
 bool
-vec_find_ptr(vec_t v, uint64_t *idx, voidptr_t target) {
+vec_find_ptr(pvec v, uint64_t *idx, voidptr_t target) {
     for (uint64_t i = 0; i < v->length; i++)
         if (v->items[i] == target) {
             *idx = i;
