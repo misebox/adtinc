@@ -16,7 +16,7 @@ static char *fruits[] = {
 void
 init_w_func(pchain pc, bool (*func)(pchain, voidptr_t)) {
     for (int i=0; i<5; i++) {
-        assert(func(pc, fruits[i]));
+        assert(func(pc, (voidptr_t)fruits[i]) == true);
     }
 }
 
