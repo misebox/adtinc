@@ -113,29 +113,38 @@ bool
 u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
     u8size_t start = start_pos >= 0 ? start_pos : src->length - abs(start_pos);
     u8size_t end = end_pos >= 0 ? end_pos : src->length - abs(end_pos);
+    if (start_pos < 0 && end == 0)
+        end = src->length;
     if (start > src->length || end > src->length || start > end)
         return false;
     uint8_t *p = src->bytes;
     uint8_t offset;
     uint8_t size;
+
     // inspecting bytes range
-    for (u8size_t pos = 0; pos < end; pos++) {
-        uint8_t unit_size = u8_unit_size(*p);
-        assert(unit_size);
-        if (pos == start) {
-            offset = (u8size_t)(p - src->bytes);
-        }
-        p += unit_size;
-        if (pos == end -1) {
-            size = ((u8size_t)(p - src->bytes - offset)) + 1; // with a terminating character
-            break;
+    if (start == end) {
+        offset = 0;
+        size = 1; // only terminating character
+    } else {
+        for (u8size_t pos = 0; pos < end; pos++) {
+            uint8_t unit_size = u8_unit_size(*p);
+            assert(unit_size);
+            if (pos == start) {
+                offset = (u8size_t)(p - src->bytes);
+            }
+            p += unit_size;
+            if (pos >= end -1) {
+                size = ((u8size_t)(p - src->bytes - offset)) + 1; // with a terminating character
+                break;
+            }
         }
     }
     if (dst->reserved < size) {
         if (!u8_reserve(dst, size))
             return false;
     }
-    memcpy(dst->bytes, src->bytes + offset, size -1);
+    if (size > 1)
+        memcpy(dst->bytes, src->bytes + offset, size -1);
     dst->bytes[size -1] = '\0';
     dst->size = size;
     dst->length = end - start;

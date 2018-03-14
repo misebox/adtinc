@@ -134,3 +134,50 @@ TEST_F(for_u8, test_u8_extend)
         ASSERT_EQ((pu8) NULL, src);
     }
 }
+
+TEST_F(for_u8, test_u8_slice)
+{
+    pu8 src;
+    pu8 dst = u8_new(u8"");
+    // f_expects_[5..8] starts with f_expects_[1..4]
+    for (uint8_t si = 1; si <= 4; si++) {
+        uint8_t li = si + 4; //5..8
+        src = u8_new(std::get<0>(f_expects_[li]));
+        ASSERT_TRUE(u8_slice(dst, src, 0, 1));
+        EXPECT_EQ(dst->length, 1);
+        EXPECT_STREQ((const char *)std::get<0>(f_expects_[si]), (const char *)dst->bytes);
+        u8_free(&src);
+    }
+
+    // zero length string
+    src = u8_new("abc");
+    ASSERT_TRUE(u8_slice(dst, src, 0, 0));
+    EXPECT_EQ(dst->length, 0);
+    EXPECT_STREQ("", (const char *)dst->bytes);
+    u8_free(&src);
+
+    // zero length string
+    src = u8_new("abc");
+    ASSERT_TRUE(u8_slice(dst, src, 3, 3));
+    EXPECT_EQ(dst->length, 0);
+    EXPECT_STREQ("", (const char *)dst->bytes);
+    u8_free(&src);
+
+    // minus to zero specified
+    src = u8_new("abc");
+    ASSERT_TRUE(u8_slice(dst, src, -3, 0));
+    EXPECT_EQ(dst->length, 3);
+    EXPECT_STREQ("abc", (const char *)dst->bytes);
+    u8_free(&src);
+    u8_free(&dst);
+}
+
+TEST_F(for_u8, test_u8_slice_failed)
+{
+    // pu8 src = u8_new(u8"abcdef");
+    // pu8 dst = u8_new(u8"");
+    // EXPECT_FALSE(u8_slice(dst, src, 6, 6));
+    // u8_free(&src);
+    // u8_free(&dst);
+}
+
