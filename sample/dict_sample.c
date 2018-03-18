@@ -12,16 +12,16 @@ static char *fruits[] = {
     "Banana",
     "Cherry",
     "Dates",
-    "Elderberry",
 };
 
 int main() {
-    for (dict_size_t size = 1; size <= 256; size++) {
-        for (uint8_t i = 0; i < 5; i++) {
+    for (dict_size_t size = 16; size <= 256; size <<= 1) {
+        for (uint8_t i = 0; i < 4; i++) {
             pu8 fruit = u8_new(fruits[i]);
-            printf("key=[%s], size=[%u]: %llu\n", (const char *)fruit->bytes, size, dict_hash(fruit, size));
+            printf("(key=[%6s], size=[%3u]: %3u) ", (const char *)fruit->bytes, size, dict_hash(fruit, size));
             u8_free(&fruit);
         }
+        printf("\n");
     }
     return 0;
 }
