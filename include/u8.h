@@ -89,3 +89,6 @@ bool
  */
 bool
     u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos);
+
+bool
+    u8_eq(pu8 lh, pu8 rh);

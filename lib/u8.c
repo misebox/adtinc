@@ -150,3 +150,14 @@ u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
     dst->length = end - start;
     return true;
 }
+
+bool
+u8_eq(pu8 lh, pu8 rh) {
+    if (lh->size != rh->size || lh->length != rh->length)
+        return false;
+    u8size_t end = lh->size;
+    for (u8size_t i = 0; i < end; i++)
+        if (lh->bytes[i] != rh->bytes[i])
+            return false;
+    return true;
+}
