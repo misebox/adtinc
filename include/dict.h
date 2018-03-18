@@ -6,6 +6,7 @@
 
 #define dict_threshold (0.75)
 #define dict_default_size (16)
+#define dict_max_size (0xFFFF)
 
 typedef uint16_t dict_size_t;
 
@@ -68,4 +69,11 @@ voidptr_t
  */
 bool
     dict_has_key(pdict d, pu8 k);
+
+/**
+ * The arguments are a pdict object and a size
+ * The result is true if success to rehash, false if not.
+ */
+bool
+    dict_rehashed(pdict d, dict_size_t size);
 

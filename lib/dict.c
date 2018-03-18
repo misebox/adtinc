@@ -63,8 +63,9 @@ dict_size_t
 dict_set(pdict d, pu8 k, voidptr_t v) {
     assert(k != NULL);
     if (d->count > (d->size * dict_threshold)) {
-        printf("It needs to be rehashed!!");
-        exit(99);
+        // Rehash with expanded size
+        dict_size_t target_size = d->size * 2 <= dict_max_size ? d->size * 2 : dict_max_size;
+        assert(dict_rehashed(d, target_size));
     }
     dict_size_t ideal = dict_hash(k, d->size);
     for (dict_size_t i = 0; i < d->size; i++) {
@@ -119,3 +120,24 @@ dict_has_key(pdict d, pu8 k) {
     return dict_addr_from_key(d, k, &actual);
 }
 
+bool
+dict_rehashed(pdict d, dict_size_t size) {
+    assert(size > d->count);
+    pdict_item rehashed = (pdict_item)calloc(size, sizeof(dict_item_t));
+    if (rehashed == NULL) {
+        return false;
+    }
+    // replace items
+    pdict_item src_items = d->items;
+    d->items = rehashed;
+    dict_size_t src_size = d->size;
+    d->size = size;
+    d->count = 0;
+    for (dict_size_t i = 0; i < src_size; i++) {
+        pdict_item slot = src_items + i;
+        if (slot->key != NULL)
+            dict_set(d, slot->key, slot->value);
+    }
+    free(src_items);
+    return true;
+}
