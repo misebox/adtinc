@@ -2,8 +2,6 @@
 #include <stdbool.h>
 #include "general.h"
 
-#define DEBUG(msg) printf("File: %s, Func: %s, Line: %d, Msg: %s\n", __FILE__, __FUNCTION__, __LINE__, msg);
-
 typedef uint16_t chain_size_t;
 
 typedef struct _chain_item chain_item_t;

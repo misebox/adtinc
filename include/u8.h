@@ -2,7 +2,6 @@
 #include <stdbool.h>
 
 
-#define DEBUG(msg) printf("File: %s, Func: %s, Line: %d, Msg: %s\n", __FILE__, __FUNCTION__, __LINE__, msg);
 typedef uint32_t u8size_t;
 typedef uint8_t *uint8ptr_t;
 #define u8_none ((u8size_t)-1)
