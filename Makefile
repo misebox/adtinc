@@ -13,6 +13,8 @@ build/sample/Makefile: sample/CMakeLists.txt
 	mkdir -p build/sample
 	cd build/sample && cmake ../../sample
 
+build: build/sample/Makefile
+
 # for test
 test: build/test/libadt-test
 	build/test/libadt-test
