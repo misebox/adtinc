@@ -4,8 +4,8 @@
 #include "u8.h"
 
 
-#define dict_threshold (0.75)
-#define dict_default_size (16)
+#define dict_threshold (0.7)
+#define dict_default_size (31)
 #define dict_max_size (0xFFFF)
 
 typedef uint16_t dict_size_t;
@@ -76,4 +76,11 @@ bool
  */
 bool
     dict_rehashed(pdict d, dict_size_t size);
+
+/**
+ * The arguments are a pdict object and a pu8 object
+ * The result is true if success to delete, false if not.
+ */
+bool
+    dict_delete(pdict d, pu8 k);
 

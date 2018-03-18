@@ -95,7 +95,7 @@ dict_addr_from_key(pdict d, pu8 k, dict_size_t *actual) {
     for (dict_size_t i = 0; i < d->size; i++) {
         dict_size_t addr = (ideal + i) % d->size;
         pdict_item slot = d->items + addr;
-        if (u8_eq(k, slot->key)) {
+        if (slot->key && u8_eq(k, slot->key)) {
             // found
             *actual = addr;
             return true;
@@ -139,5 +139,19 @@ dict_rehashed(pdict d, dict_size_t size) {
             dict_set(d, slot->key, slot->value);
     }
     free(src_items);
+    return true;
+}
+
+bool
+dict_delete(pdict d, pu8 k) {
+    dict_size_t actual = 0;
+    if (!dict_addr_from_key(d, k, &actual)) {
+        return false;
+    }
+    pdict_item slot = d->items + actual;
+    slot->hash = 0;
+    slot->key = NULL;
+    slot->value = NULL;
+    d->count --;
     return true;
 }
