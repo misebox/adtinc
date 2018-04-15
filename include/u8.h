@@ -1,3 +1,5 @@
+#ifndef _LIBADT_U8_H
+#define _LIBADT_U8_H
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -92,3 +94,5 @@ bool
 
 bool
     u8_eq(pu8 lh, pu8 rh);
+
+#endif /* _LIBADT_U8_H */

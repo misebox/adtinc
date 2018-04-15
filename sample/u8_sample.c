@@ -2,8 +2,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <string.h>
-#include "vec.h"
-#include "u8.h"
+#include "adt.h"
 
 
 int main() {

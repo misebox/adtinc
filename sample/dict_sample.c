@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "dict.h"
+#include "adt.h"
 
 
 static const char *keys[] = { // 16
