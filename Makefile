@@ -4,7 +4,13 @@ all: main
 clean:
 	rm -r build/*
 
-main: sample
+main: libadt
+
+libadt: lib/*.c include/*.h build/libadt/Makefile
+	cd build/libadt && make clean && make && make install && cd -
+build/libadt/Makefile: lib/CMakeLists.txt
+	mkdir -p build/libadt
+	cd build/libadt && cmake -D CMAKE_INSTALL_PREFIX=../dist ../../lib
 # for sample executables
 sample: lib/*.c include/*.h sample/*.c build/sample/Makefile
 	cd build/sample && make clean && make && cd -
