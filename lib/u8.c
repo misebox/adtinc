@@ -7,7 +7,7 @@
 
 
 // utf-8 string
-static inline uint8_t u8_unit_size(uint8_t c) {
+uint8_t u8_unit_size(uint8_t c) {
     if ((0x80 <= c && c <= 0xC1) || (0xF5 <= c)) {
         // Found an invalid byte
         return 0;
@@ -62,6 +62,30 @@ u8_new(const char* src) {
   failed:
     free(u);
     return NULL;
+}
+
+bool
+u8_assign(pu8 u, const char*src) {
+    if (u) {
+        // get length
+        u8size_t len = u8_length(src);
+        if (len == u8_none) {
+            return false;
+        }
+        // required byte size
+        u8size_t str_size = strnlen(src, len * 4);
+        u->size = str_size + 1; // for terminating character
+        u8size_t size = str_size * 2 + 1;
+
+        // allocate memory
+        if (u->reserved < size)
+            if (!u8_reserve(u, size))
+                return false;
+        u->length = len;
+        // set data
+        memcpy(u->bytes, src, u->reserved);
+    }
+    return false;
 }
 
 void

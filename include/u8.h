@@ -25,6 +25,12 @@ struct _u8 {
 #define u8_copy(dst, src) u8_slice(dst, src, 0, src->length);
 
 /**
+ * Count byte size for a utf-8 character
+ */
+uint8_t
+    u8_unit_size(uint8_t c);
+
+/**
  * Count length for utf-8 string.
  * usage:
  *     u8size_t count = u8_length(u8"🍣🍣🍣"); // count == 3
@@ -41,6 +47,16 @@ u8size_t
  */
 pu8
     u8_new(const char* src);
+
+/**
+ * Assign a string into a pu8 object.
+ * If failed to allocate required buffer, returns false.
+ * usage:
+ *     bool success = u8_assign(pu, u8"🍣🍣🍣");
+ *     if (!success) printf("failed");
+ */
+bool
+    u8_assign(pu8 u, const char* src);
 
 /**
  * Destruct pu8 object.
