@@ -6,6 +6,12 @@
 $ git clone --recursive https://github.com/misebox/libadt.git && cd libadt && make
 ```
 
+## make static library and headers
+
+```
+$ make
+```
+
 ## testing
 
 ```
