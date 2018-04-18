@@ -121,7 +121,7 @@ bool
 u8_extend(pu8 dst, pu8 src) {
     u8size_t length = dst->length + src->length;
     if (u8_maxlength < length)
-        return true;
+        return false;
     u8size_t size = dst->size + src->size - 1;
     if (dst->reserved < size) {
         if (!u8_reserve(dst, size))
@@ -133,6 +133,22 @@ u8_extend(pu8 dst, pu8 src) {
     return true;
 }
 
+bool
+u8_append(pu8 dst, char ch) {
+    u8size_t length = dst->length + 1;
+    if (u8_maxlength < length)
+        return false;
+    u8size_t size = dst->size + 1;
+    if (dst->reserved < size) {
+        if (!u8_reserve(dst, size))
+            return false;
+    }
+    dst->bytes[dst->size - 1] = ch;
+    dst->bytes[dst->size] = '\0';
+    dst->size = size;
+    dst->length = length;
+    return true;
+}
 bool
 u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
     u8size_t start = start_pos >= 0 ? start_pos : src->length - abs(start_pos);

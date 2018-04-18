@@ -96,6 +96,17 @@ bool
     u8_extend(pu8 dst, pu8 src);
 
 /**
+ * Append char at tail of pu8 object.
+ * First argument is pu8 object.
+ * Second argument is char.
+ * Returns true if success else false.
+ * usage:
+ *     pu8 dst = u8_new(u8"🍣🍣🍣");
+ *     bool ok = u8_append(dst, 'a'); // 🍣🍣🍣a
+ */
+bool
+    u8_append(pu8 dst, char ch);
+/**
  * Copy substring of second object into first object.
  * Substring is from start_pos to end_pos in second object.
  * Reverse index like -5 (it means where length minus 5) is allowed.
