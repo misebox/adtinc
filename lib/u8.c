@@ -149,6 +149,7 @@ u8_append(pu8 dst, char ch) {
     dst->length = u8_length((const char *)dst->bytes);
     return true;
 }
+
 bool
 u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
     u8size_t start = start_pos >= 0 ? start_pos : src->length - abs(start_pos);
