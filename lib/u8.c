@@ -146,7 +146,7 @@ u8_append(pu8 dst, char ch) {
     dst->bytes[dst->size - 1] = ch;
     dst->bytes[dst->size] = '\0';
     dst->size = size;
-    dst->length = length;
+    dst->length = u8_length((const char *)dst->bytes);
     return true;
 }
 bool
