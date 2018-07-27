@@ -22,8 +22,8 @@ struct _u8 {
     uint8ptr_t bytes;
 };
 
-#define u8_copy(dst, src) u8_slice(dst, src, 0, src->length);
-#define u8_copy_new(src) u8_slice_new(src, 0, src->length);
+#define u8_copy_into(dst, src) u8_slice_into(dst, src, 0, src->length);
+#define u8_copy(src) u8_slice(src, 0, src->length);
 
 /**
  * Count byte size for a utf-8 character
