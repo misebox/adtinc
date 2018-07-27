@@ -19,12 +19,12 @@ int main() {
     vec_push(lst, u8_new(u8"「なぜ生きるか🍺」を知っている者は、ほとんど、あらゆる「いかに生きるか🍺」に耐えるのだ。"));
     vec_push(lst, u8_new(u8"樹木🍀にとって最も大切なものは何かと問うたら、それは果実だと誰もが答えるだろう。しかし実際には種なのだ。"));
     vec_push(lst, u8_new(u8"あなたが出会う最悪の敵🍣は、いつもあなた自身🍣であるだろう。"));
-    pu8 sliced = u8_new("");
+    pu8 sliced;
     for (u8size_t i=0; i < lst->length; i++) {
         pu8 u = vec_get(lst, i);
         printf("%s\n", u->bytes);
-        if (u8_slice(sliced, u, 1, -1))
-            printf("sliced: [%s], length: %u, size: %u, reserved: %u\n", sliced->bytes, sliced->length, sliced->size, sliced->reserved);
+        sliced = u8_slice(u, 1, -1);
+        printf("sliced: [%s], length: %u, size: %u, reserved: %u\n", sliced->bytes, sliced->length, sliced->size, sliced->reserved);
     }
     for (u8size_t i=0; i < lst->length; i++) {
         pu8 u = vec_get(lst, i);
@@ -34,11 +34,14 @@ int main() {
 
 
     pu8 src = u8_new(u8"🍣🍣🍣🍺🍺🍺");
-    pu8 dst = u8_new(u8"");
-    if (u8_slice(dst, src, 2, 4)) printf("%s\n", dst->bytes); // 🍣🍺
-    if (u8_slice(dst, src, 1, -1)) printf("%s\n", dst->bytes); // 🍣🍣🍺🍺
-    u8_free(&src);
+    pu8 dst;
+    dst = u8_slice(src, 2, 4);
+    printf("%s\n", dst->bytes); // 🍣🍺
     u8_free(&dst);
+    dst = u8_slice(src, 1, -1);
+    printf("%s\n", dst->bytes); // 🍣🍣🍺🍺
+    u8_free(&dst);
+    u8_free(&src);
     return 0;
 }
 

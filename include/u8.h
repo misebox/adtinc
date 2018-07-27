@@ -23,6 +23,7 @@ struct _u8 {
 };
 
 #define u8_copy(dst, src) u8_slice(dst, src, 0, src->length);
+#define u8_copy_new(src) u8_slice_new(src, 0, src->length);
 
 /**
  * Count byte size for a utf-8 character
@@ -117,7 +118,10 @@ bool
  *     if (u8_slice(dst, src, 1, -1)) printf("%s\n", dst->bytes); // 🍣🍣🍺🍺
  */
 bool
-    u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos);
+    u8_slice_into(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos);
+
+pu8
+    u8_slice(pu8 src, int32_t start_pos, int32_t end_pos);
 
 bool
     u8_eq(pu8 lh, pu8 rh);

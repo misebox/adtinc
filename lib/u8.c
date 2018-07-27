@@ -150,8 +150,15 @@ u8_append(pu8 dst, char ch) {
     return true;
 }
 
+pu8
+u8_slice(pu8 src, int32_t start_pos, int32_t end_pos) {
+  pu8 dst = u8_new("");
+  assert(!u8_slice_into(dst, src, start_pos, end_pos));
+  return dst;
+}
+
 bool
-u8_slice(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
+u8_slice_into(pu8 dst, pu8 src, int32_t start_pos, int32_t end_pos) {
     u8size_t start = start_pos >= 0 ? start_pos : src->length - abs(start_pos);
     u8size_t end = end_pos >= 0 ? end_pos : src->length - abs(end_pos);
     if (start_pos < 0 && end == 0)
