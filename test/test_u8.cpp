@@ -172,6 +172,15 @@ TEST_F(for_u8, test_u8_slice_into)
     u8_free(&dst);
 }
 
+TEST_F(for_u8, test_u8_slice)
+{
+    pu8 src = u8_new(u8"abcdef");
+    pu8 dst = u8_slice(src, 0, 6);
+    EXPECT_STREQ(u8"abcdef", (const char *)dst->bytes);
+    u8_free(&src);
+    u8_free(&dst);
+}
+
 TEST_F(for_u8, test_u8_slice_into_failed)
 {
     // pu8 src = u8_new(u8"abcdef");

@@ -153,7 +153,7 @@ u8_append(pu8 dst, char ch) {
 pu8
 u8_slice(pu8 src, int32_t start_pos, int32_t end_pos) {
   pu8 dst = u8_new("");
-  assert(!u8_slice_into(dst, src, start_pos, end_pos));
+  assert(u8_slice_into(dst, src, start_pos, end_pos));
   return dst;
 }
 
