@@ -94,6 +94,40 @@ TEST_F(for_u8, test_u8_new_and_free)
     ASSERT_EQ((pu8) NULL, u);
 }
 
+TEST_F(for_u8, test_u8_from_and_free)
+{
+    for (int i=0; i<f_expects_size_; i++) {
+        const char *src = std::get<0>(f_expects_[i]);
+        u8size_t size = std::get<2>(f_expects_[i]);
+        pu8 u = u8_from(src, size - 1);
+        ASSERT_NE((pu8) NULL, u);
+        EXPECT_EQ(u->length, std::get<1>(f_expects_[i]));
+        EXPECT_EQ(u->reserved, size);
+        EXPECT_EQ(u->size, size);
+        EXPECT_STREQ((const char *)u->bytes, src);
+        u8_free(&u);
+        EXPECT_EQ((pu8) NULL, u);
+    }
+    pu8 u = u8_from(f_maxlength_, u8_maxlength);
+    ASSERT_NE((pu8) NULL, u);
+    EXPECT_EQ(u->size, u8_maxlength + 1);
+    EXPECT_EQ(u->length, u8_maxlength);
+    EXPECT_EQ(u->reserved, u8_maxlength + 1);
+    EXPECT_STREQ((const char *)u->bytes, f_maxlength_);
+    u8_free(&u);
+    ASSERT_EQ((pu8) NULL, u);
+
+    const char *str = "apple banana citlas";
+    u = u8_from(str + 6, 6);
+    ASSERT_NE((pu8) NULL, u);
+    EXPECT_EQ(u->size, 7);
+    EXPECT_EQ(u->length, 6);
+    EXPECT_EQ(u->reserved, 7);
+    EXPECT_STREQ((const char *)u->bytes, "banana");
+    u8_free(&u);
+    ASSERT_EQ((pu8) NULL, u);
+}
+
 TEST_F(for_u8, test_u8_reserve)
 {
     pu8 u;

@@ -64,6 +64,35 @@ u8_new(const char* src) {
     return NULL;
 }
 
+pu8
+u8_from(const char* src, u8size_t size) {
+    pu8 u = (pu8)malloc(sizeof(struct _u8));
+    if (u) {
+        // get length
+        u->reserved = u->size = size + 1;
+
+        // allocate memory
+        u->bytes = (uint8ptr_t)malloc(u->reserved);
+        if (!u->bytes)
+            goto failed;
+        // set data
+        memcpy(u->bytes, src, size);
+        u->bytes[size] = '\0';
+
+        // get length
+        u8size_t len = u8_length((char *)u->bytes);
+        if (len == u8_none) {
+            goto failed;
+        }
+        u->length = len;
+    }
+    return u;
+
+  failed:
+    free(u);
+    return NULL;
+}
+
 bool
 u8_assign(pu8 u, const char*src) {
     if (u) {

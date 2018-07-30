@@ -50,6 +50,17 @@ pu8
     u8_new(const char* src);
 
 /**
+ * Constructs a new pu8 object
+ * from string pointer and size
+ * If failed to allocate required buffer, returns u8_none.
+ * usage:
+ *     pu8 u = u8_from(u8"abcde", 3); // "abc" is set
+ *     if (!u) printf("failed");
+ */
+pu8
+    u8_from(const char* src, u8size_t size);
+
+/**
  * Assign a string into a pu8 object.
  * If failed to allocate required buffer, returns false.
  * usage:
